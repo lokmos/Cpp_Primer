@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include <list>
+#include <deque>
 using namespace std;
 
 // Exercise 9.4
@@ -65,6 +66,43 @@ bool E9_16(list<int>& lst1, vector<int>& vec1) {
         ++it2;
     }
     return true;
+}
+
+// Exercise 9.18
+void E9_18() {
+    string s;
+    deque<string> dq;
+    while (cin >> s) {
+        dq.push_back(s);
+    }
+    for (deque<string>::iterator it = dq.begin(); 
+        it != dq.end(); ++it) {
+        cout << *it << endl;
+    }
+}
+
+// Exercise 9.19
+void E9_19() {
+    string s;
+    list<string> lst;
+    while (cin >> s) {
+        lst.push_back(s);
+    }
+    for (list<string>::iterator it = lst.begin(); 
+        it != lst.end(); ++it) {
+        cout << *it << endl;
+    }
+}
+
+// Exercise 9.22
+void E9_22(vector<int> &iv, int some_val) {
+    vector<int>::iterator iter = iv.begin(), mid = iv.begin() + iv.size() / 2;
+    while (iter != mid) {
+        if (*iter == some_val) {
+            iter = iv.insert(iter, 2 * some_val);
+            iter += 2;
+        }
+    }
 }
 
 int main() {
