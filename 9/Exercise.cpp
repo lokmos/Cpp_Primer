@@ -105,7 +105,34 @@ void E9_22(vector<int> &iv, int some_val) {
     }
 }
 
+// Exercise 9.26
+void E9_26() {
+    int ia[] = {0, 1, 1, 2, 3, 5, 8, 13, 21, 55};
+    // 数组名称是一个指向数组首元素的指针，所以不能直接使用
+    vector<int> vec(ia, ia + 10);
+    list<int> lst(ia, ia + 10);
+
+    auto it = vec.begin();
+    while (it != vec.end()) {
+        if (*it % 2 == 0) {
+            it = vec.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+    auto it2 = lst.begin();
+    while (it2 != lst.end()) {
+        if (*it2 % 2 != 0) {
+            it2 = lst.erase(it2);
+        } else {
+            ++it2;
+        }
+    }
+}
+
 int main() {
-    E9_13();
+    // E9_13();
+    E9_26();
     return 0;
 }
