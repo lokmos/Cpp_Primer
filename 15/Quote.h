@@ -10,6 +10,10 @@ public:
     std::string isbn() const;   
     virtual double net_price(std::size_t n) const {return n * price;}
     virtual ~Quote() = default;
+
+    virtual Quote* clone() const & { return new Quote(*this); }
+    virtual Quote* clone() && { return new Quote(std::move(*this)); }
+
 private:
     std::string bookNo;
 protected:
