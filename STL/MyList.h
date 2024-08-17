@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <algorithm>
 
+
 template <typename T>
 class List {
 public:
@@ -15,8 +16,8 @@ private:
     // 定义节点结构
     struct Node {
         T data;
-        T* prev;
-        T* next;
+        Node* prev;
+        Node* next;
 
         Node() : data(T()), prev(nullptr), next(nullptr) {}
         Node(const T& value, Node* prevNode = nullptr, Node* nextNode = nullptr)
@@ -159,7 +160,27 @@ public:
     }
 
     Node* begin() {return head;}
-    
+    const Node* begin() const {return head;}
+    Node *end() {return tail->next;}
+    const Node *end() const {return tail->next;}
+
+    void printElements() const {
+        Node* cur = head;
+        while (cur) {
+            std::cout << cur->data << " ";
+            cur = cur->next;
+        }
+        std::cout << std::endl;
+    }
 };
+
+template <typename U>
+std::ostream& operator<<(std::ostream& os, const List<U>& pt) {
+    for (typename List<U>::Node* current = pt.head; current; current = current->next) {
+        os << " " << current->data;
+    }
+    os << std::endl;
+    return os;
+}
 
 #endif
