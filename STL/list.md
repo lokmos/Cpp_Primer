@@ -22,4 +22,9 @@ std::list 是基于双向链表的数据结构
 
 # 工作原理
 
-![img](https://kstar-1253855093.cos.ap-nanjing.myqcloud.com/baguwen1.0/202404031645007.png)
+![img](assets/202404031645007.png)
+
+- 蓝色矩形框：堆内存
+- 红色矩形块：栈内存
+- 红色箭头：next指针
+- 蓝色箭头：prev指针
