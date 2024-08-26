@@ -45,12 +45,12 @@ private:
         // 将pivot的右节点挂到node的左节点
         node->left = pivot->right;
         // 如果pivot的右节点不为空，将其父节点指向node
-        if (pivot->right != Nil)
+        if (pivot->right)
             pivot->right->parent = node;
 
         // 将pivot上升到node的位置
         pivot->parent = node->parent;
-        if (node->parent == Nil)
+        if (!node->parent)
             root = pivot;
         else if (node == node->parent->left)
             node->parent->left = pivot;
@@ -70,7 +70,7 @@ private:
             pivot->left->parent = node;
 
         pivot->parent = node->parent;
-        if (node->parent == Nil)
+        if (!node->parent)
             root = pivot;
         else if (node == node->parent->left)
             node->parent->left = pivot;
@@ -129,6 +129,92 @@ private:
         }
         // 根节点着色为黑色
         root->color = Color::BLACK;
+    }
+
+    // 插入节点
+    void insertNode(const Key &key, const Value &value) {
+        Node *newNode = new Node(key, value, Color::RED);
+        Node *parent = nullptr;
+        Node *cur = root;
+
+        while (cur) {
+            parent = cur;
+            if (key < cur->key)
+                cur = cur->left;
+            else if (key > cur->key)
+                cur = cur->right;
+            else {
+                cur->value = value;
+                return;
+            }
+        }
+
+        ++size;
+        newNode->parent = parent;
+        if (!parent)
+            root = newNode;
+        else if (key < parent->key)
+            parent->left = newNode;
+        else
+            parent->right = newNode;
+
+        insertFixup(newNode);
+    }
+
+    // 中序遍历
+    void inorderTraversal(Node *node) const {
+        if (!node)
+            return;
+        inorderTraversal(node->left);
+        std::cout << node->key << " ";
+        std::cout << node->value << std::endl;
+        inorderTraversal(node->right);
+    }
+
+    // 辅助函数，用新节点替换旧节点
+    void replaceNode(Node *targetNode, Node *newNode) {
+        if (!targetNode->parent)
+            root = newNode;
+        else if (targetNode == targetNode->parent->left)
+            targetNode->parent->left = newNode;
+        else
+            targetNode->parent->right = newNode;
+
+        if (newNode)
+            newNode->parent = targetNode->parent;
+
+        delete targetNode;
+    }
+
+    // 辅助函数，寻找以node为根的最小节点
+    Node *findMinimumNode(Node *node) {
+        while (node->left)
+            node = node->left;
+        return node;
+    }
+
+    // 删除修复
+    void removeFixup(Node *node) {
+        // 如果是唯一节点，不需要修复
+        if (node == Nil && node->parent == nullptr)
+            return;
+        // 如果删除节点是红色，不需要修复
+        if (node && node->color == Color::RED)
+            return;
+
+        while (node != root) {
+            // 如果节点是其父节点的左子节点
+            if (node == node->parent->left) {
+                Node *sibling = node->parent->right;
+
+                // 1: 兄弟节点是红色
+                if (getColor(sibling) == Color::RED) {
+                    setColor(sibling, Color::BLACK);
+                    setColor(node->parent, Color::RED);
+                    leftRotate(node->parent);
+                }
+            }
+        }
     }
 };
 
